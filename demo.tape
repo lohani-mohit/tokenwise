@@ -3,23 +3,31 @@
 Output assets/demo.gif
 
 Set Shell "bash"
-Set FontSize 18
-Set Width 1100
-Set Height 720
+Set FontSize 16
+Set Width 1160
+Set Height 760
 Set Theme "Catppuccin Mocha"
-Set Padding 18
-Set TypingSpeed 45ms
+Set Padding 20
+Set TypingSpeed 40ms
+
+# Run from a dir that has real Claude Code sessions so the demo is populated.
+Hide
+Type "cd ~/Desktop && clear" Enter
+Show
+Sleep 500ms
 
 Type "# What did my last Claude Code session cost?"
 Enter
-Sleep 800ms
-Type "node ~/.claude/skills/tokenwise/scripts/analyze.mjs"
-Enter
-Sleep 3s
-
-Type "# And the trend across every session in this project:"
-Enter
-Sleep 800ms
-Type "node ~/.claude/skills/tokenwise/scripts/analyze.mjs --trend"
+Sleep 700ms
+Type "node ~/.claude/skills/tokenwise/scripts/analyze.mjs | head -13"
 Enter
 Sleep 3.5s
+
+Type "clear" Enter
+Sleep 300ms
+Type "# Cost across every session in this project:"
+Enter
+Sleep 700ms
+Type "node ~/.claude/skills/tokenwise/scripts/analyze.mjs --trend"
+Enter
+Sleep 4s

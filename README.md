@@ -12,8 +12,7 @@ The best part: the heavy parsing happens in a **zero-dependency Node script**, s
 
 ![read-only](https://img.shields.io/badge/mode-read--only-brightgreen) ![cost in $](https://img.shields.io/badge/cost-in%20real%20%24-brightgreen) ![zero deps](https://img.shields.io/badge/deps-zero-blue) ![node](https://img.shields.io/badge/node-%E2%89%A518-black) ![license](https://img.shields.io/badge/license-MIT-black) ![works with](https://img.shields.io/badge/Claude%20Code-skill-orange)
 
-<!-- DEMO GIF: record with `vhs demo.tape` (see "Recording the demo GIF" below), save to assets/demo.gif, then uncomment: -->
-<!-- ![tokenwise showing a session's exact cost and savings](assets/demo.gif) -->
+![tokenwise showing a session's exact cost, grade, and cost across sessions](assets/demo.gif)
 
 </div>
 

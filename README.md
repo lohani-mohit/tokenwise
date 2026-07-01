@@ -173,17 +173,6 @@ skills/tokenwise/
 
 **Does it work on a specific agent run?** Yes — point it at that agent's `.jsonl`, or at a session directory to roll up everything.
 
-## Recording the demo GIF
-
-The repo ships a [`vhs`](https://github.com/charmbracelet/vhs) tape so the GIF is one command:
-
-```sh
-brew install vhs
-vhs demo.tape          # writes assets/demo.gif
-```
-
-Then uncomment the one marked `![…](assets/demo.gif)` line near the top of this README. (Until then, nothing renders broken — it's an HTML comment.)
-
 ## Contributing
 
 Issues and PRs welcome — especially new cost heuristics (e.g. detecting large pasted blobs, chatty tool loops, or low-value re-greps). Keep the analyzer dependency-free.

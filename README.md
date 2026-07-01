@@ -12,6 +12,9 @@ The best part: the heavy parsing happens in a **zero-dependency Node script**, s
 
 ![read-only](https://img.shields.io/badge/mode-read--only-brightgreen) ![cost in $](https://img.shields.io/badge/cost-in%20real%20%24-brightgreen) ![zero deps](https://img.shields.io/badge/deps-zero-blue) ![node](https://img.shields.io/badge/node-%E2%89%A518-black) ![license](https://img.shields.io/badge/license-MIT-black) ![works with](https://img.shields.io/badge/Claude%20Code-skill-orange)
 
+<!-- DEMO GIF: record with `vhs demo.tape` (see "Recording the demo GIF" below), save to assets/demo.gif, then uncomment: -->
+<!-- ![tokenwise showing a session's exact cost and savings](assets/demo.gif) -->
+
 </div>
 
 ---
@@ -97,8 +100,34 @@ why was that agent so expensive?
 You can also run the analyzer directly, without Claude:
 
 ```sh
-node ~/.claude/skills/tokenwise/scripts/analyze.mjs             # current project's latest session
-node ~/.claude/skills/tokenwise/scripts/analyze.mjs <file|dir>  # a specific transcript or session dir
+node ~/.claude/skills/tokenwise/scripts/analyze.mjs                 # this project's latest session (+ subagents)
+node ~/.claude/skills/tokenwise/scripts/analyze.mjs <file|dir>      # a specific transcript or session dir
+node ~/.claude/skills/tokenwise/scripts/analyze.mjs --trend         # cost across ALL sessions in this project
+node ~/.claude/skills/tokenwise/scripts/analyze.mjs --json [target] # machine-readable (for CI cost gates)
+```
+
+### Track cost over time
+
+`--trend` sweeps every session in a project and prints a dated cost table plus your most expensive session:
+
+```
+TOKENWISE TREND  —  2 sessions in ~/.claude/projects/<project>
+Total across all sessions: $54.08
+
+date        cost      turns  grade  session
+2026-07-01    $51.69    302      A  d5dfb70a
+2026-06-23     $2.39     18      C  30db4e51
+
+Most expensive session: $51.69 (302 turns, grade A) — d5dfb70a
+```
+
+### CI cost gate
+
+`--json` emits structured output you can wire into CI to fail a build that ran too expensive:
+
+```sh
+COST=$(node .../analyze.mjs --json | node -e 'process.stdin.once("data",d=>console.log(JSON.parse(d).cost_usd))')
+awk "BEGIN{exit !($COST > 5.00)}" && echo "::error::session cost \$$COST exceeded \$5.00 budget" && exit 1
 ```
 
 ## How it works
@@ -133,6 +162,7 @@ skills/tokenwise/
 - **Cheap to run, by construction** — the analyzer is deterministic local code; Claude only reads a small summary. It practices what it preaches.
 - **Zero dependencies, read-only** — just Node (which you already have) reading files Claude Code already wrote.
 - **Actionable, quantified** — every finding comes with a number and a specific fix, ending in the single biggest win.
+- **Cost over time + CI-ready** — `--trend` charts spend per session across a whole project; `--json` drops straight into a CI cost gate that fails a build that ran too expensive.
 
 ## FAQ
 
@@ -143,6 +173,17 @@ skills/tokenwise/
 **Where are transcripts?** `~/.claude/projects/<escaped-cwd>/<session>.jsonl`, with subagents under `<session>/subagents/`. The analyzer finds them for you.
 
 **Does it work on a specific agent run?** Yes — point it at that agent's `.jsonl`, or at a session directory to roll up everything.
+
+## Recording the demo GIF
+
+The repo ships a [`vhs`](https://github.com/charmbracelet/vhs) tape so the GIF is one command:
+
+```sh
+brew install vhs
+vhs demo.tape          # writes assets/demo.gif
+```
+
+Then uncomment the one marked `![…](assets/demo.gif)` line near the top of this README. (Until then, nothing renders broken — it's an HTML comment.)
 
 ## Contributing
 
